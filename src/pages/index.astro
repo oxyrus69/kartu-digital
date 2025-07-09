@@ -1,16 +1,23 @@
 ---
+import Layout from '../layouts/Layout.astro';
+import PortfolioCard from '../components/PortfolioCard.astro';
 
+// 1. Siapkan semua data dalam satu objek. Ganti isinya sesuai datamu!
+const cardData = {
+  name: "Julian/fla1r", // Ganti dengan namamu
+  bio: "Junior Web Dev - Writer.", // Ganti dengan biomu
+  imgSrc: "/profile.jpg", // Path ke gambar profilmu
+  links: [
+    { url: "https://github.com/oxyrus69", text: "GitHub" },
+    { url: "https://instagram.com/d1ednow", text: "Instagram" },
+    { url: "https://oxyrus69.github.io/", text: "Portfolio" }
+  ]
+};
 ---
+<Layout title="Digital Portfolio Card">
 
-<html lang="en">
-	<head>
-		<meta charset="utf-8" />
-		<link rel="icon" type="image/svg+xml" href="/favicon.svg" />
-		<meta name="viewport" content="width=device-width" />
-		<meta name="generator" content={Astro.generator} />
-		<title>Astro</title>
-	</head>
-	<body>
-		<h1>Astro</h1>
-	</body>
-</html>
+  <main class="flex justify-center items-center min-h-screen p-4">
+    <PortfolioCard {...cardData} />
+  </main>
+
+</Layout>
