@@ -1,0 +1,48 @@
+# Nama Workflow yang akan tampil di tab Actions
+name: Deploy to GitHub Pages
+
+on:
+  # Menjalankan workflow ini setiap kali ada push ke branch `main`
+  push:
+    branches: [ "main" ]
+  # Memungkinkan kita menjalankan workflow ini secara manual dari tab Actions
+  workflow_dispatch:
+
+# Memberi izin pada workflow untuk menulis ke GitHub Pages
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+# Pengaturan agar hanya satu deployment yang berjalan pada satu waktu
+concurrency:
+  group: "pages"
+  cancel-in-progress: false
+
+jobs:
+  deploy:
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20 # Menggunakan Node.js versi 20
+      - name: Install dependencies
+        run: npm ci
+      - name: Build
+        run: npm run build
+      - name: Setup Pages
+        uses: actions/configure-pages@v5
+      - name: Upload artifact
+        uses: actions/upload-pages-artifact@v3
+        with:
+          # Mengunggah isi dari folder `dist`
+          path: './dist'
+      - name: Deploy to GitHub Pages
+        id: deployment
+        uses: actions/deploy-pages@v4
